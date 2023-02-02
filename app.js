@@ -1,3 +1,4 @@
+
 var search = document.querySelector('.search');
 var city = document.querySelector('.city');
 var country = document.querySelector('.country');
@@ -34,7 +35,7 @@ function convert_vi_to_en(str) {
 
 async function changeWeatherUI(capitalSearch) {
     let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${capitalSearch} &appid=ad4fab968b134033141452fc1b052dff`
-    let data = await fetch(apiUrl).then(res => res.json());
+    let data = await fetch(apiUrl, { mode: 'cors' }).then(res => res.json());
     if (data.cod == 200) {
         content.classList.remove('hide');
         city.innerText = data.name;
