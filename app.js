@@ -41,8 +41,6 @@ const getWeather = async (capitalSearch) => {
 }
 
 const changeWeatherUI = async (capitalSearch) => {
-    // let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${capitalSearch} &appid=ad4fab968b134033141452fc1b052dff`
-    // let data = await fetch(apiUrl, { mode: 'cors' }).then(res => res.json());
     let data = await getWeather(capitalSearch);
     if (data.status == 200) {
         content.classList.remove('hide');
