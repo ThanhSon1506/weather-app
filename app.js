@@ -41,7 +41,7 @@ const getWeather = async (capitalSearch) => {
 }
 
 const changeWeatherUI = async (capitalSearch) => {
-    let data = await getWeather(capitalSearch);
+    const data = await getWeather(capitalSearch);
     if (data.status == 200) {
         content.classList.remove('hide');
         city.innerText = data.data.name;
@@ -49,10 +49,10 @@ const changeWeatherUI = async (capitalSearch) => {
         visibility.innerText = data.data.visibility + 'm';
         wind.innerText = data.data.wind.speed + 'm/s';
         sun.innerText = data.data.main.humidity + '%';
-        let temp = Math.round(data.data.main.temp - 273.15);
+        const temp = Math.round(data.data.main.temp - 273.15);
         value.innerText = temp;
         shortDesc.innerText = data.data.weather[0] ? data.data.weather[0].main : '';
-        let date = new Date();
+        const date = new Date();
         time.innerText = date.getHours('vi') + ':' + date.getMinutes('vi') + ':' + date.getSeconds('vi') + ',' + date.toLocaleDateString('vi');
         body.setAttribute('class', 'hot');
         if (temp <= 25) {
