@@ -1,4 +1,3 @@
-
 var search = document.querySelector('.search');
 var city = document.querySelector('.city');
 var country = document.querySelector('.country');
@@ -33,19 +32,28 @@ function convert_vi_to_en(str) {
     return str;
 }
 
-async function changeWeatherUI(capitalSearch) {
-    let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${capitalSearch} &appid=ad4fab968b134033141452fc1b052dff`
-    let data = await fetch(apiUrl, { mode: 'cors' }).then(res => res.json());
-    if (data.cod == 200) {
+const getWeather = async (capitalSearch) => {
+    try {
+        return await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${capitalSearch} &appid=ad4fab968b134033141452fc1b052dff`);
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const changeWeatherUI = async (capitalSearch) => {
+    // let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${capitalSearch} &appid=ad4fab968b134033141452fc1b052dff`
+    // let data = await fetch(apiUrl, { mode: 'cors' }).then(res => res.json());
+    let data = await getWeather(capitalSearch);
+    if (data.status == 200) {
         content.classList.remove('hide');
-        city.innerText = data.name;
-        country.innerText = data.sys.country;
-        visibility.innerText = data.visibility + 'm';
-        wind.innerText = data.wind.speed + 'm/s';
-        sun.innerText = data.main.humidity + '%';
-        let temp = Math.round(data.main.temp - 273.15);
+        city.innerText = data.data.name;
+        country.innerText = data.data.sys.country;
+        visibility.innerText = data.data.visibility + 'm';
+        wind.innerText = data.data.wind.speed + 'm/s';
+        sun.innerText = data.data.main.humidity + '%';
+        let temp = Math.round(data.data.main.temp - 273.15);
         value.innerText = temp;
-        shortDesc.innerText = data.weather[0] ? data.weather[0].main : '';
+        shortDesc.innerText = data.data.weather[0] ? data.data.weather[0].main : '';
         let date = new Date();
         time.innerText = date.getHours('vi') + ':' + date.getMinutes('vi') + ':' + date.getSeconds('vi') + ',' + date.toLocaleDateString('vi');
         body.setAttribute('class', 'hot');
@@ -63,6 +71,8 @@ async function changeWeatherUI(capitalSearch) {
     }
 
 }
+
+
 search.addEventListener('keypress', function (e) {
     if (e.code === 'Enter') {
         let capitalSearch = convert_vi_to_en(search.value.trim()).toLowerCase();
