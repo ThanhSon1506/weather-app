@@ -40,34 +40,37 @@ const getWeather = async (capitalSearch) => {
     }
 }
 
-const changeWeatherUI = async (capitalSearch) => {
-    const data = await getWeather(capitalSearch);
-    if (data.status == 200) {
-        content.classList.remove('hide');
-        city.innerText = data.data.name;
-        country.innerText = data.data.sys.country;
-        visibility.innerText = data.data.visibility + 'm';
-        wind.innerText = data.data.wind.speed + 'm/s';
-        sun.innerText = data.data.main.humidity + '%';
-        const temp = Math.round(data.data.main.temp - 273.15);
-        value.innerText = temp;
-        shortDesc.innerText = data.data.weather[0] ? data.data.weather[0].main : '';
-        const date = new Date();
-        time.innerText = date.getHours('vi') + ':' + date.getMinutes('vi') + ':' + date.getSeconds('vi') + ',' + date.toLocaleDateString('vi');
-        body.setAttribute('class', 'hot');
-        if (temp <= 25) {
-            body.setAttribute('class', 'cool');
+function changeWeatherUI(capitalSearch) {
+    // var data = await getWeather(capitalSearch);
+    axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${capitalSearch} &appid=ad4fab968b134033141452fc1b052dff`).then(res => {
+        console.log('mui gio', new Date((new Date().getTime()) + (res.data.timezone - 25200) * 1000));
+        console.log(res);
+        if (res.status == 200) {
+            content.classList.remove('hide');
+            city.innerText = res.data.name;
+            country.innerText = res.data.sys.country;
+            visibility.innerText = res.data.visibility + 'm';
+            wind.innerText = res.data.wind.speed + 'm/s';
+            sun.innerText = res.data.main.humidity + '%';
+            var temp = Math.round(res.data.main.temp - 273.15);
+            value.innerText = temp;
+            shortDesc.innerText = res.data.weather[0] ? res.data.weather[0].main : '';
+            var date = new Date((new Date().getTime()) + (res.data.timezone - 25200) * 1000);
+            time.innerText = date.getHours('vi') + ':' + date.getMinutes('vi') + ':' + date.getSeconds('vi') + ',' + date.toLocaleDateString('vi');
+            body.setAttribute('class', 'hot');
+            if (temp <= 25) {
+                body.setAttribute('class', 'cool');
+            }
+            if (temp <= 22) {
+                body.setAttribute('class', 'warm');
+            }
+            if (temp <= 19) {
+                body.setAttribute('class', 'cold');
+            }
+        } else {
+            content.classList.add('hide')
         }
-        if (temp <= 22) {
-            body.setAttribute('class', 'warm');
-        }
-        if (temp <= 19) {
-            body.setAttribute('class', 'cold');
-        }
-    } else {
-        content.classList.add('hide')
-    }
-
+    }).catch(error => console.log(error.response.data));
 }
 
 
