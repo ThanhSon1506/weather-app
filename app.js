@@ -32,17 +32,10 @@ function convert_vi_to_en(str) {
     return str;
 }
 
-const getWeather = async (capitalSearch) => {
-    try {
-        return await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${capitalSearch} &appid=ad4fab968b134033141452fc1b052dff`);
-    } catch (error) {
-        console.error(error)
-    }
-}
 
 function changeWeatherUI(capitalSearch) {
     // var data = await getWeather(capitalSearch);
-    axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${capitalSearch} &appid=ad4fab968b134033141452fc1b052dff`).then(res => {
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${capitalSearch} &appid=ad4fab968b134033141452fc1b052dff`).then(res => {
         console.log('mui gio', new Date((new Date().getTime()) + (res.data.timezone - 25200) * 1000));
         console.log(res);
         if (res.status == 200) {
