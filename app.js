@@ -67,11 +67,14 @@ function changeWeatherUI(capitalSearch) {
 }
 
 
+search.addEventListener('blur', function (e) {
+    let capitalSearch = convert_vi_to_en(search.value.trim()).toLowerCase();
+    changeWeatherUI(capitalSearch);
+});
 search.addEventListener('keypress', function (e) {
     if (e.code === 'Enter') {
         let capitalSearch = convert_vi_to_en(search.value.trim()).toLowerCase();
         changeWeatherUI(capitalSearch);
     }
 });
-
 changeWeatherUI('vung tau');
