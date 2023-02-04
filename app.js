@@ -70,7 +70,7 @@ function changeWeatherUI(capitalSearch) {
         } else {
             content.classList.add('hide')
         }
-    }).catch(error => { console.log(error.response.data) });
+    });
 }
 
 
